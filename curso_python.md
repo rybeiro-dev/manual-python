@@ -613,9 +613,10 @@ help(saudacao)
 print(saudacao.__doc__)
 ```
 
-#### Args
-O *args é um parâmetro utilizado em uma função. E colocamos os valores extras informados com tipo tupla(). Lembre-se
-que tuplas são imutáveis.
+#### *args
+O *args é usado em funções para permitir que um número variável de argumentos seja passado para a função. Quando você 
+usa *args na definição de uma função, ele coleta os argumentos adicionais fornecidos à função em uma tupla. Isso é útil
+quando você não sabe antecipadamente quantos argumentos serão passados para a função.. Lembre-se que tuplas são imutáveis.
 
 ```python
 # Declarando o *args
@@ -651,15 +652,141 @@ print(soma(numeros))
 print(soma(*numeros))
 # output: 6
 
-## IMPORTANTE: O desempacotamento funciona com as coleções List, Tuple e Sets. Dicionário não funciona.
+## IMPORTANTE: O desempacotamento funciona com as coleções List, Tuple e Sets. 
+# Dicionário não funciona. É outra abordagem.
 ```
+
+#### **kwargs
+é usado para permitir que uma função aceite um número variável de argumentos nomeados (ou argumentos de palavra-chave). 
+Quando você usa **kwargs na definição de uma função, ele coleta todos os argumentos nomeados adicionais fornecidos à 
+função em um dicionário. Isso é útil quando você não sabe antecipadamente quais e quantos argumentos nomeados serão 
+passados para a função.
+
+```python
+# Exemplo de uso
+def imprimir_informacoes(**kwargs):
+    for chave, valor in kwargs.items():
+        print(f"{chave}: {valor}")
+
+# Exemplo de uso
+imprimir_informacoes(nome="João", idade=30, cidade="São Paulo")
+```
+##### IMPORTANTE:
+Ordem de definição de parâmetros de funções e métodos:
+- Parâmetros obrigatórios
+- *args
+- Parâmetros default
+- **kwargs
+
+```python
+def funcao(idade, nome, *args, solteiro=False, **kwargs):
+    print(f'Parâmetros obrigatórios: idade {idade} e nome {nome}')
+    print(f'Parâmetros do Args: {args}')
+    print(f'Parâmetros default: {solteiro}') 
+    print(f'Parâmetros do Kwargs: {kwargs}')
+```
+### List Comprehension
+Utilizado para gerar uma nova lista a partir de dados processados de outro iterável.
+
+Sintaxe de uso de List Comprehension: [ dado for in iterável ]
+
+```python
+# Uso
+numeros = [1,2,3,4,5]
+res = [numero * 10 for numero in numeros]
+
+print(res)
+
+
+# Estrutura condicionais dentro do for
+pares = [numero for numero in numeros if not numero % 2 == 0]
+
+
+# Estrutura condicional fora do for
+result = [numero * 10 if numero % 2 == 0 else numero for numero in numeros]
+
+```
+### Listas Aninhadas
+São array unidimensionais (Array/Vetores) e multidimensionais (Matriz)
+
+Sintaxe: [[1,2,3], [4,5,6]]
 
 ```python
 ```
 
+### Dict Comprehension
+Utilizado para gerar um novo dicionário a partir de dados processados de outro iterável.
+
 ```python
+numeros = {'a':1, 'b':2, 'c':3, 'd':4}
+
+quadrado = {chave: valor ** 2 for chave, valor in numeros.items()}
+
+print(quadrado)
+
 ```
 
+### Set Comprehension
+Utilizado para gerar um novo (Set) conjunto a partir de dados processados de outro iterável.
+
+```python
+numeros = { numero for numero in range(1,10)}
+
+print(numeros)
+
+quadrados = { quadrado ** 2 for quadrado in range(1,10)}
+
+# Gerando um dicionário a partir de um conjunto
+dicionario = { x: x ** 3 for x in range(1,10)}
+
+```
+### Expressões Lambdas
+Lambda é uma função anônima. Para usar o lambda é necessário usar a palavra reservada.
+
+```python
+# Função comum
+def soma(x):
+    3 * x + 1
+
+print(soma(4))
+
+# A mesma função utilizando lambda
+calc = lambda x: 3 * x + 1
+
+# como usar lambda
+print(calc(4))
+
+
+### Mais sobre Lambda
+# sem parâmetro
+saudacao = lambda: 'Seja bem vindo'
+# com mais parâmetros
+nome_completo = lambda nome, sobrenome: f'{nome.strip().title()} {sobrenome.strip().title()}'
+
+# usando Sort e Lambda para ordenar pelo sobrenome
+autores = ['Joaquim Silva', 'Maria Gusman Alvim', 'Marta Maria', 'Suegon Sunami Daemon']
+
+print(autores.sort(key=lambda sobrenome: sobrenome.split(' ').title()))
+
+```
+##### Função Quadrática - Solução usando lambda
+Relembrando a função quadrática: f(x) = a * x ** 2 + b * x + c
+
+```python
+def quadratica(a, b, c):
+    return lambda x: a * x ** 2 + b * x + c
+
+fx = quadratica(2, 3, -5)
+
+print(fx(0))
+print(fx(2))
+print(fx(1))
+
+print(quadratica(2,5,7)(2))
+```
+
+```python
+```
 ```python
 ```
 
