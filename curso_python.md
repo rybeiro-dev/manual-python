@@ -740,6 +740,15 @@ quadrados = { quadrado ** 2 for quadrado in range(1,10)}
 dicionario = { x: x ** 3 for x in range(1,10)}
 
 ```
+
+### Generator express
+Tuple Comprehension são chamadas de Generator express.
+
+```python
+gerador = (x * 2 for x in range(1000))
+
+```
+
 ### Expressões Lambdas
 Lambda é uma função anônima. Para usar o lambda é necessário usar a palavra reservada.
 
@@ -785,17 +794,206 @@ print(fx(1))
 print(quadratica(2,5,7)(2))
 ```
 
-```python
-```
-```python
-```
+### Maps
+É uma função que recebe dois parâmetros, uma função e um iterável, e retorna um _Map Object_.
 
 ```python
+import math
+
+raios  = [5, 2, 0.4, 8, 3.4]
+# função
+def area(r):
+    return math.pi * (r ** 2)
+
+# map
+areas = map(area, raios)
+print(areas)
+print(list(areas))
+
+# MAP com Lambda
+print(list(map(lambda r: math.pi * (r ** 2), raios)))
 ```
 
-### Lambda
-_Lambda_ são funções sem nome que com parâmetro opcional e retorno obrigatório.
+### Filter
+Utilizado para filtrar dados de uma coleção. É uma função que recebe dois parâmetros, uma função e um iterável, 
+e retorna um _Filter Object_
+
+Filter verificar se a função que foi passada retorna True ou False para filtrar e retornar dados.
+
+```python
+# calculo de média
+valores = [1.3, 0.5, 2.5, 4.1, 5.7, -0.3, 9.8]
+
+import statistics
+# media = sum(valores) / len(valores) # método convencional
+media = statistics.mean(valores)
+
+print(media)
+
+# Utilizando o Filter
+res = filter(lambda valor: valor > media, valores)
+
+print(list(res))
+
+# Como remover dados em branco/vazios
+# 
+paises = ['', '', 'Brasil', ' ', 'China', 'Russia', '', 'Eua', 'Marrocos', 'Israel', '', 'Japão']
+print(paises)
+
+# Opção 1: None
+res = filter(None, paises)
+print(list(res))
+
+# opção 2: lambda
+res1 = filter(lambda pais: len(pais) > 0, paises)
+print(list(res1))
+
+# opção 3: lambda + for
+res2 = filter(lambda pais: pais != '' and pais != ' ', paises)
+print(list(res2))
+
+```
+
+### Reduce
+Para usar _reduce_ é necessário importá-la do módulo _functools_
+
+ É uma função que recebe dois parâmetros, uma função com dois parâmetros e um iterável.
+
+```python
+# Reduce para multiplicar os dados de uma lista
+dados = [1,2,3,4,5,6,7,8,9]
+
+from functools import reduce
+
+res = reduce(lambda x, y: x * y, dados)
+print(res)
+```
+
+### Any - Algum
+Retorna True se apenas um elemento do iterável for verdadeiros e False para vazio.
+```python
+print(any([0,1,2,3,4])) # True
+# output: True 
+
+print(any([0, False, {}, (), []]))
+# output: False 
+```
+
+### All - Todos ou vazio
+Retorna True se todos os elementos do iterável são verdadeiros ou vazio.
+
+```python
+print(all([0,1,2,3]))
+# output: False porque o zero é falso.
+
+print(all([0,1,2,3]))
+# output: True
+```
+
+### Sorted
+Aplicável em qualquer iterável, serve para ordenar. Retorna uma nova lista, independente do iterável.
+
+```python
+lista = [8, 1, 7, 2]
+# Menor para o Maior
+print(sorted(lista))
+
+# Maior para o Menor
+print(sorted(lista, reverse=True))
+
+```
+
+### Min e Max
+- Max retorna o maior valor em um iterável, dois valores ou dois elementos. 
+- Min retorna o menor valor em um iterável, dois valores ou dois elementos.
+
+```python
+valores = range(1000)
+print(max(valores))
+print(min(valores))
+```
+
+- Min e Max tem a opção key que recebe uma função.
+
+```python
+usuarios = [
+    {'nome': 'Claybom Cremoso', 'idade': 54},
+    {'nome': 'Jao Mao de Pilao', 'idade': 18},
+    {'nome': 'Doritos Gostoso', 'idade': 37},
+    {'nome': 'Charlie Charp', 'idade': 13},
+    {'nome': 'Agora ou Nunca', 'idade': 54},
+]
+
+print(max(usuarios, key=lambda user: user['idade']))
+print(min(usuarios, key=lambda user: user['idade']))
+```
+
+### Reversed
+O _reversed()_ retorna uma lista chamada de _List Reverse Iterator_, esse retorno pode ser convertido em lista e tupla.
+
+```python
+lista = [1,2,3,4,5,6,7,8]
+
+print(list(reversed(lista)))
+```
+### Zip
+O _zip()_ cria um iterável (Zip Object) dada 2 ou mais iteráveis retornando pares a partir da combinação da posição.
+O zip pode ser convertido em lista, tupla, conjunto ou dicionário.
+
+```python
+lista1 = [1,2,3]
+lista2 = [3,4,5]
+zip1 = zip(lista1, lista2)
+print(zip1)
+print(type(zip1))
+print(list(zip1))
+print(tuple(zip1))
+print(set(zip1))
+print(dict(zip1))
+```
+
+## Erros comuns
+- IndexError
+- ValueError
+- SyntaxError
+- KeyError
+- NameError
+- AttributeError
+- IndentationError
 
 
-#### DICAS
-Na IDE PYCHARM podemos desabilitar o spelling que sublinha as palavras em português
+```python
+
+```
+
+```python
+
+```
+
+
+
+
+# DICAS
+Na IDE PYCHARM podemos desabilitar o spelling que sublinha as palavras em português.
+
+# Benchmark  
+Medir quantos bytes um dado está ocupando na mémoria.
+
+```python
+from sys import getsizeof
+
+lista = getsizeof([ x * 10 for x in range(1000)])
+conjunto = getsizeof(( x * 10 for x in range(1000)))
+dicionario = getsizeof({x: x * 10 for x in range(1000)})
+gerador = getsizeof(x * 10 for x in range(1000))
+
+print(f'List Comprehension:  {lista} bytes')
+print(f'Set Comprehension:  {conjunto} bytes')
+print(f'Dict Comprehension:  {dicionario} bytes')
+print(f'Generator Express:  {gerador} bytes')
+
+```
+
+# BIBLIOTECAS
+Para trabalhar com estatística utilize: statistics.
+
