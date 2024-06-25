@@ -961,13 +961,129 @@ print(dict(zip1))
 - AttributeError
 - IndentationError
 
+### Raise
+O _raise_ lança uma exceção pré-definida pelo usuário. 
+
+A Sintaxe é: raise TipoErro('Mensagem')
+```python
+# Lançando uma exceção do tipo ValueError
+# raise ValueError("Valor incorreto!")
+
+# exemplo de uso
+def colorir(texto, cor):
+    if type(texto) is not str:
+        raise TypeError('O texto informado não é válido, passe uma string')
+
+    if type(cor) is not str:
+        raise TypeError('A cor informada não é válida, passe uma string')
+
+colorir('test', 4)
+# Traceback (most recent call last):
+# File "<stdin>", line 1, in <module>
+# File "<stdin>", line 3, in colorir
+# TypeError: O texto deve ser uma string
+```
+
+### Try/Except
+Usamos try/except para tratar bloco de código que possam gerar uma falha, prevenindo que o sistema pare.
+
+O _try_ é utilizado para trecho de código problemático e o _except_ o que deve ser feito em caso de falha.
 
 ```python
+# try/except simples
+try:
+    area()
+except:
+    print("Houve uma falha no processo")
+# output: Houve uma falha no processo
+
+# Conhecendo o tipo de erro, definimos no except
+try:
+    area()
+except NameError:
+    print("Houve uma falha no processo")
+# Output: Houve uma falha no processo
+
+# Capturando o erro quando sabemos o tipo
+try:
+    area()
+except NameError as err:
+    print(f"Houve uma falha no processo: {err}")
+# Output: Houve uma falha no processo: name 'area' is not defined
+```
+
+### Try, except, else e finally
+Toda entrada de dados no sistema deve ser tratada.
+
+O try tenta executar um trecho de código, caso de alguma falha cai no except. O else só é executado caso o try seja 
+bem-sucedido. O finally sempre é executado independentemente se houve exceção ou não. Geralmente é utilizado para fechar
+conexão com o banco de dados.
+
+```python
+# caso de uso
+try:
+    num = int(input("informe um número: "))
+except ValueError:
+    print("você não digitou um número")
+else:
+    print(f'O número digitado foi {num}')
+finally:
+    print('O finally vai ser executado de quaquer jeito')
 
 ```
 
-```python
+### Debugando código com PDB - Python debugging
+Usar o breakpoint da ferramenta Pycharm.
 
+Caso não utilize a ferramente é possível utilizar o breakpoint nativo do python.
+
+Atalhos da linha de comando:
+- (l) lista aonde está no código
+- (n) vá para próxima linha
+- (p) imprime variável
+- (c) continua e finaliza o debugging
+
+Exemplo de uso
+```python
+nome = 'Fabio'
+sobrenome = 'Ribeiro'
+nome_completo = f'{nome} {sobrenome}'
+breakpoint()
+curso = 'Programação Python'
+estudante = f'{nome_completo} faz o curso {curso}'
+print(estudante)
+```
+
+### Módulos
+Módulo em Python é todo arquivo e podemos importar métodos específicos.
+
+Para usar módulo externos devemos instalar. Podemos encontrar todos os pacotes de terceiros no site oficial: 
+https://pypi.org
+
+Para instalar utilizamos o gerenciador de pacotes PIP
+````shell
+pip install colorama
+````
+
+### Pacotes
+Pacote Python é um diretório.
+
+Nas versões 2x é obrigatório o arquivo chamado __init__.py, nas versões 3x não é obrigatório mas é usado para manter
+a compatibilidade.
+
+### Dunder Name e Dunder Main
+Dunder é Doble underscore ou duplo sublinhado.
+
+- Dunder Name: __name__ 
+- Dunder Main: __main__
+
+Quando um arquivo python é executado ele implicitamente passa para o __name__ como valor __main__ isso para evitar 
+conflitos. E quando o arquivo é importado o __name__ recebe o nome do arquivo como valor.
+
+```python
+# Verificação comum em python
+if __name__ == '__main__':
+    """código omitido"""
 ```
 
 
