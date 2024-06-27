@@ -1087,6 +1087,300 @@ if __name__ == '__main__':
 ```
 
 
+## Trabalhando com Arquivos
+Passos básicos para trabalhar com arquivos.
+
+- Abrir o arquivo
+- Trabalhar no arquivo
+- Fechar o arquivo
+
+### Leitura de arquivos
+Para leitura do conteúdo de um arquivo usamos a função integrada open(), essa função retorna um _io.TextIOWrapper.
+
+Para escrever ou ler dados em arquivos é necessário ter a devida permissão do sistema operacional.
+
+```python
+# abre o arquivo 
+arquivo = open('arquivo.txt')
+
+# O tipo do arquivo é _io.TextIOWrapper
+type(arquivo)
+
+"""arquivo.read() lê todo o arquivo"""
+arquivo.read()
+
+"""Limite de caracteres"""
+arquivo.read(50)
+
+"""arquivo.readline() lê o arquivo linha a linha"""
+arquivo.readline()
+
+"""arquivo.readlines() lê todo arquivo e cria uma lista unificando todas as linhas"""
+arquivo.readlines()
+
+"""arquivo.close() fechar o arquivo"""
+arquivo.close()
+
+"""arquivo.closed verifica se o arquivo está fechado o retorno é um booleano"""
+t = arquivo.closed
+```
+### seek()
+O seek() movimenta o cursor dentro do arquivo.
+
+### Bloco With
+O bloco with é utilizado para criar um contexto de trabalho onde os recursos utilizados são fechados após o bloco.
+
+O With abre e fecha o arquivo/conexão automaticamente.
+
+```python
+with open('arquivo.txt') as arquivo:
+    print(arquivo.readlines())
+    print(arquivo.closed)
+
+print(arquivo.closed)
+```
+
+### Escrever em arquivos
+Para escrever em um arquivo precisamos abrir. Precisa passar o modo de escrita.
+
+Se o arquivo não existir é criado no sistema operacional. E para escrever utilizamos a função write().
+
+Importante saber que a função write() recebe como argumento uma string.
+
+Abrindo um arquivo utilizando o modo de escrita 'w', se o arquivo não existir será criado e caso exista ele é apagado 
+e um novo arquivo é criado para o conteúdo. Portanto, o conteúdo é perdido.
+
+```python
+with open('novo.txt', 'w') as escrever:
+    escrever.write('Novo conteúdo escrito com sucesso!')
+    escrever.write('Novo2 conteúdo escrito com sucesso!')
+    escrever.write('Novo3 conteúdo escrito com sucesso!')
+```
+
+### Modos de arquivos
+- O 'r' abre para leitura - modo padrão.
+- O 'w' abre para escrita.
+- O 'x' abre para escrita somente se o arquivo não existir, caso exista lança uma except FileExistsError.
+- O 'a' abre para escrita  adicionando o conteúdo no final do arquivo.
+- O 'a+' abre para leitura e escrita.
+
+### StringIO
+Podemos criar um arquivo em memória e efetuar a leitura quantas vezes for necessário.
+
+Para utilizar é necessário fazer o import.
+
+```python
+from io import StringIO
+
+mensagem = "Teste de escrita temporária e na memória"
+
+arquivo2 = StringIO(mensagem)
+
+print(arquivo2.read())
+```
+
+### Sistemas de arquivo
+Para fazer manipulação de arquivos do sistema operacional, precisamos importar o módulo _os_.
+
+```python
+import os
+
+# caminho absoluto
+os.getcwd()
+
+# mudar de diretório
+os.chdir('..')
+
+# verificar se o diretório atual é absoluto ou relativo
+os.path.isabs('/home/projetos')
+
+# Detalhes do sistema operacional
+os.uname()
+
+# juntar diretórios
+os.path.join(os.getcwd(), 'teste')
+
+# listar arquivos e diretórios
+os.listdir()
+
+# listar arquivos e diretórios com mais detalhes
+scanner = os.scandir()
+arquivos = list(scanner)
+print(dir(arquivos))
+print(arquivos[0].stat())
+
+scanner.close()
+
+# verificar se um arquivo ou diretório existe
+os.path.exists('teste.txt') # arquivo
+os.path.exists('teste') # diretório
+
+
+# criar arquivo definindo o caminho do path
+os.mknod('~/Downloads/teste.txt')
+
+# criar diretório, esse comando cria um a um
+os.mkdir('teste')
+
+# criar vários diretórios
+os.makedirs('teste/teste2')
+
+# verificar se o diretório jé existe ante de criar vários diretórios
+os.makedirs('teste/teste2', exist_ok=True)
+
+# Renomear arquivos ou diretórios
+os.rename('teste', 'novo')
+os.rename('teste.txt', 'novo.txt')
+
+# Remover arquivos
+os.remove('texto.txt')
+
+# Remover diretórios
+```
+
+### Iterators e Iterable
+Iterators é um objeto que pode ser iterado, sendo um elemento por vez quando usamos a função next().
+
+Iterable é um objeto que ira retornar um iterator quando a função iter() for chamada.
+
+```python
+nome = "Teste"
+next(nome) # vai gerar uma exceção.
+
+nome = iter(nome)
+next(nome)
+```
+
+### Generators
+São iterators e utiliza o _yield_ e o retorno é um generator.
+
+Como o Yield é de múltiplo retorno ele sempre aguarda o next() para continuar a execução.
+
+```python
+# 
+def contador(val_max):
+    count = 1
+    while count <= val_max:
+        yield count
+        count = count + 1
+        
+#
+gen = contador(10)
+
+#
+print(next(gen))
+
+print("Teste")
+
+for i in gen:
+    print(i)
+
+# se tranformar em uma lista já temos todos os valores
+gen2 = list(gen)
+```
+
+### Teste de mémoria com Generators
+
+Sequência de Fibonacci 1,1,3,5,8,13...
+
+```python
+# Função padrão
+def fibo(max):
+    nums = []
+    a, b = 0, 1
+    while len(nums) < max:
+        nums.append(b)
+        a, b = b, a + b
+    return nums
+
+# essa função alocou aproximadamente 450MB na memória
+fibo(100_000)
+
+# Generators
+
+def fibo_gen(max):
+    a, b, contador = 0, 1, 0
+    while contador < max:
+        a, b = b, a + b
+        yield a
+        contador = contador + 1
+
+# essa generator alocou aproximadamente 3MB na memória
+fibo_gen(100_000)
+```
+
+### Teste de velocidade
+
+```python
+import time
+
+# Generator express
+gen_start = time.time()
+print(sum(num for num in range(1_000_000)))
+gen_end = time.time()
+
+# List Comprehension
+list_start = time.time()
+print(sum(num for num in range(1_000_00)))
+list_end = time.time()
+
+print(f'Tempo de execução do Generator express: {gen_end - gen_start}')
+print(f'Tempo de execução do List Comprehension:  {list_end - list_start}')
+```
+
+### Funções de maior grandeza | HOF - Higher Order Function
+Exemplo de definição de função
+```python
+def somar(a, b):
+    return a + b
+
+def subtrair(a, b):
+    return a - b
+
+def multiplicar(a, b):
+    return a * b
+
+def dividir(a, b):
+    return a / b
+
+# HOF
+def calcular(a, b, funcao):
+    return funcao(a, b)
+
+
+print(calcular(4,3,somar))
+print(calcular(4,3,subtrair))
+print(calcular(4,3,multiplicar))
+print(calcular(4,3,dividir))
+```
+
+### Funções aninhadas - Nested Function
+Exemplo de função aninhada
+
+```python
+# a função choice escolhe uma opção aleatoriamente
+from random import choice
+
+def cumprimento(nome):
+    def humor():
+        return choice(('Você está bem?', 'Trabalhou hoje?', 'Está descansada?'))
+    return nome + humor()
+
+print(cumprimento('Fabio'))
+```
+### Decoradores - Decorators
+Decorators são funções, envolvem outras funções, são Higher Order Function, tem sintaxe própria usando o "@".
+
+```python
+def saudacao():
+    print("Seja bem vindo!")
+
+@saudacao
+def nome(nome):
+    print(f'Olá, {nome}')
+
+nome("Fabio")
+```
 
 
 # DICAS
