@@ -1372,15 +1372,44 @@ print(cumprimento('Fabio'))
 Decorators são funções, envolvem outras funções, são Higher Order Function, tem sintaxe própria usando o "@".
 
 ```python
-def saudacao():
-    print("Seja bem vindo!")
+def gritar(funcao):
+    def aumentar(nome):
+        return funcao(nome).upper()
+    return aumentar
 
-@saudacao
-def nome(nome):
-    print(f'Olá, {nome}')
+@gritar
+def saudar(nome):
+    return f'Olá eu sou {nome}'
 
-nome("Fabio")
+saudar("Fabio")
+
 ```
+
+### Decorator Pattern
+Esse padrão de projeto utiliza o args e kwargs.
+
+Caso haja a necessidade, pode ser definido argumentos para o decorators.
+
+```python
+def gritar(funcao):
+    def aumentar(*args, **kwargs):
+        return funcao(*args, **kwargs).upper()
+    return aumentar
+
+@gritar
+def saudar(nome):
+    return f'Olá eu sou {nome}'
+
+print(saudar("Fabio"))
+
+@gritar
+def pedir(principal, acompanhamento):
+    return f'Olá eu gostaria de {principal} acompanhado de {acompanhamento}'
+
+print(pedir('Picanha', 'Fritas'))
+```
+
+### Preservando Metadata com Wraps
 
 
 # DICAS
