@@ -1389,7 +1389,7 @@ saudar("Fabio")
 Esse padrão de projeto utiliza o args e kwargs.
 
 Caso haja a necessidade, pode ser definido argumentos para o decorators.
-
+ 
 ```python
 def gritar(funcao):
     def aumentar(*args, **kwargs):
@@ -1409,7 +1409,53 @@ def pedir(principal, acompanhamento):
 print(pedir('Picanha', 'Fritas'))
 ```
 
+### Metadata - Metadados
+Metadata ou metadados descreve e fornece informações sobre outros dados, ajudando a contextualizar, organizar e 
+gerenciar esses dados.
+
+Exemplos de como a metadata pode ser usada:
+- Bancos de Dados:
+  - Esquema de Tabelas: Informações sobre a estrutura de tabelas, incluindo nomes de tabelas, nomes de colunas, tipos de dados de colunas, chaves primárias e estrangeiras. 
+  - Índices: Detalhes sobre os índices que aceleram a recuperação de dados.
+  - Restrições: Regras aplicadas aos dados, como restrições de integridade.
+- Arquivos:
+  - Documentos: Informações como autor, data de criação, data de modificação, e tamanho do arquivo.
+  - Imagens: Dados como resolução, formato, data de captura, e configuração da câmera.
+- Web:
+  - Páginas Web: Títulos, descrições, palavras-chave e outros elementos que ajudam na indexação por motores de busca. 
+- Desenvolvimento de Software:
+  - Código-Fonte: Comentários, anotações e documentação que descrevem o propósito e uso de funções, classes e módulos. 
+- Bibliotecas de Software (como SQLAlchemy):
+  - SQLAlchemy: Utiliza metadata para descrever a estrutura do banco de dados, incluindo tabelas, colunas, tipos de dados e relações. Em SQLAlchemy, a MetaData é uma coleção de informações sobre o layout do banco de dados que pode ser usada para gerar esquemas, realizar migrações e facilitar a interação com o banco de dados.
+
 ### Preservando Metadata com Wraps
+Para preservar os metadados utilizamos o pacote wraps.
+
+É necessário importá-lo: ```from functools import wraps```
+
+Wraps são funções que envolvem elementos com diversas finalidades.
+
+O uso do wraps é através de decorators ```@wraps(funcao)```
+
+### Forçar tipo de dado com decorators
+```python
+def forca_tipo(*tipos):
+    def decorador(funcao):
+        def converter(*args, **kwargs):
+            novo_args = []
+            for (valor, tipo) in zip(args, tipos):
+                novo_args.append(tipo(valor))
+            return funcao(*args, **kwargs)
+        return converter
+    return decorador
+
+@forca_tipo(str, int)
+def repetir_msg(msg, vezes):
+    for vez in range(vezes):
+        print(msg)
+
+repetir_msg("teste", 3)
+```
 
 
 # DICAS
