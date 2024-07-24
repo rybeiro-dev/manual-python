@@ -393,7 +393,31 @@ O melhor exemplo é o overwritten.
 São todos os métodos que utilizam o dunder, ou duplo underline.
 
 
+## Arquivos CSV - Comma Separated Values (Valores separados por vírgula)
+#### Leitura de CSV
+É necessário importar o módulo csv e utilizar o reader() usado em Listas e DictReader() usado em dicionários.
 
+```python
+# reader() - lista
+from csv import reader
+
+with open('dados.csv') as csvfile:
+    dados = reader(csvfile)
+    next(dados)
+    for linha in dados:
+      print(f'{linha[0]} dado {linha[1]} e {linha[2]}')
+
+
+# DictReader() - dicionario
+# delimiter padrão é vírgula
+from csv import DictReader
+with open('dados.csv') as csvfile:
+    dados = DictReader(csvfile, delimiter=';')
+    for row in dados:
+      print(f'agora pela chave {row['nome']} e teste {row['sobrenome']}')
+```
+
+#### Escrita em CSV
 
 
 
