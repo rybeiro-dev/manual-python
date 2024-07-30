@@ -418,7 +418,26 @@ with open('dados.csv') as csvfile:
 ```
 
 #### Escrita em CSV
+Importe o pacote csv modulo writer() para possibilitar a escrita em arquivo CSV.
+E o método writerow() para escreve cada linha, esse método recebe uma lista.
 
+Caso de uso
+```python
+from csv import writer
+with open('exemplo.csv', 'w') as file:
+    arquivo = writer(file)
+    filme = None
+    # cabeçalho do arquivo
+    arquivo.writerow(['Titulo', 'Autor'])
+    sair = ''
+    while sair != '':
+      if sair != '':
+        titulo = input('Informe o nome do Título: ')
+        autor = input('Informe o nome do Autor: ')
+        arquivo.writerow([titulo, autor])
+        sair = input('Para encerrar, escreva sair')
+
+```
 
 
 
